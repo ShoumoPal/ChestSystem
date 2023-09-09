@@ -10,6 +10,6 @@ public class ChestScriptableObject: ScriptableObject
     public Vector2Int Chest_Gems_Range;
     public int Max_Unlock_Time;
     public int Max_Gems_To_Unlock;
-    public Sprite Chest_Sprite;
+    public ChestView ChestView;
     public ChestType Chest_Type;
 }

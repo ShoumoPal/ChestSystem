@@ -16,5 +16,5 @@ MonoBehaviour:
   Chest_Gems_Range: {x: 0, y: 0}
   Max_Unlock_Time: 0
   Max_Gems_To_Unlock: 0
-  Chest_Sprite: {fileID: -1205014996, guid: 2add25c4448f81a4b960684d870ad3a6, type: 3}
+  ChestView: {fileID: 1581629000664776725, guid: e9900e478bf366c48ba22395493d26c7, type: 3}
   Chest_Type: 0

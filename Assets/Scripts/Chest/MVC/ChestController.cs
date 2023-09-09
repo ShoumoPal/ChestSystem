@@ -1,5 +1,7 @@
 using UnityEngine;
 
+/* Chest Controller for MVC */
+
 public class ChestController
 {
     private ChestView _chestView;

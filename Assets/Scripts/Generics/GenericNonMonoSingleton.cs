@@ -1,22 +1,21 @@
 using UnityEngine;
 
-/* Monobehaviour singleton generic */
+/* Non monobehaviour singleton generic */
 
-public class GenericMonoSingleton<T> : MonoBehaviour where T : GenericMonoSingleton<T>
+public class GenericNonMonoSingleton<T> where T : GenericNonMonoSingleton<T>
 {
     private static T instance;
     public static T Instance { get { return instance; } }
 
-    private void Awake()
+    public GenericNonMonoSingleton()
     {
         if(instance == null)
         {
             instance = (T)this;
-            DontDestroyOnLoad(instance);
         }
         else
         {
-            Destroy(this);
+            Debug.Log("Trying to create another instance of " + instance);
         }
     }
 }
