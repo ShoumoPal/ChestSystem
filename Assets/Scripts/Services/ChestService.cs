@@ -27,6 +27,10 @@ public class ChestService : GenericMonoSingleton<ChestService>
                 slot.EmptyText.SetActive(false);
                 break;
             }
+            if(i == ChestSlotService.Instance.ChestSlots.Length - 1)
+            {
+                EventService.Instance.InvokeOnSlotsFull();
+            }
         }
     }
 
