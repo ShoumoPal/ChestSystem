@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,9 @@ public class ChestSlot
 {
     public GameObject Slot;
     public GameObject EmptyText;
+    public TextMeshProUGUI TimerText;
+    public Button UnlockButton;
+    public ChestController ChestController;
     public SlotType SlotType;
 }
 
@@ -29,5 +33,14 @@ public class ChestSlotService : GenericMonoSingleton<ChestSlotService>
     {
         ChestSlot slot = Array.Find(ChestSlots, i => i.Slot == chestSlot.Slot);
         slot.SlotType = slotType;
+    }
+    public void SetTimerText(ChestSlot chestSlot, string _text)
+    {
+        chestSlot.TimerText.text = _text;
+    }
+    public void SetUnlockButtonText(ChestSlot chestSlot, string _buttonText)
+    {
+        ChestSlot slot = Array.Find(ChestSlots, i => i.Slot == chestSlot.Slot);
+        slot.UnlockButton.GetComponentInChildren<TextMeshProUGUI>().text = _buttonText;
     }
 }

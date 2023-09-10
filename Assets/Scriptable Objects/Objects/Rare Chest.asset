@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86864118ec303954c842ae4f3ef24924, type: 3}
   m_Name: Rare Chest
   m_EditorClassIdentifier: 
-  Chest_Coins_Range: {x: 0, y: 0}
-  Chest_Gems_Range: {x: 0, y: 0}
+  Chest_Coins_Range: {x: 300, y: 500}
+  Chest_Gems_Range: {x: 20, y: 40}
   Max_Unlock_Time: 0
-  Max_Gems_To_Unlock: 0
+  Max_Gems_To_Unlock: 20
   ChestView: {fileID: 1581629000664776725, guid: b7d29f5ffae8557409ffa9765e3963de, type: 3}
   Chest_Type: 1
