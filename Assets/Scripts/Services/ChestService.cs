@@ -17,6 +17,7 @@ public class ChestService : GenericMonoSingleton<ChestService>
 
     private void SpawnChest()
     {
+        SoundService.Instance.PlayClip(SoundType.ButtonClick);
         for(int i = 0; i < ChestSlotService.Instance.ChestSlots.Length; i++)
         {
             ChestSlot slot = ChestSlotService.Instance.ChestSlots[i];
@@ -42,13 +43,15 @@ public class ChestService : GenericMonoSingleton<ChestService>
 
         // Setting all MVC components and Instantiating the view
         ChestModel model = new ChestModel(obj);
-        ChestView view = GameObject.Instantiate<ChestView>(model.ChestView);
-        view.transform.SetParent(_slot.Slot.transform);
+        ChestView view = GameObject.Instantiate<ChestView>(model.ChestView, _slot.Slot.transform);
+        //view.transform.SetParent(_slot.Slot.transform);
         view.gameObject.GetComponent<RectTransform>().localPosition = Vector3.zero;
 
         // Linking all components
         ChestController newChest = new ChestController(view, model);
         view.SetChestController(newChest);
         model.SetChestController(newChest);
+
+        EventService.Instance.InvokeOnChestSpawn(newChest);
     }
 }

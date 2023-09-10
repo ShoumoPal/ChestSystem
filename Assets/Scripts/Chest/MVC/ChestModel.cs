@@ -10,6 +10,16 @@ public enum ChestType
     LEGENDARY
 }
 
+/* Enum for chest state */
+
+public enum ChestState
+{
+    LOCKED,
+    UNLOCKING,
+    UNLOCKED,
+    COLLECTED
+}
+
 /* Chest Model for MVC */
 
 public class ChestModel
