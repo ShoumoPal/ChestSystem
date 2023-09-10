@@ -45,7 +45,7 @@ public class ChestService : GenericMonoSingleton<ChestService>
             {
                 ChestSlotService.Instance.SetSlotType(slot, SlotType.FILLED);
                 GenerateRandomChest(slot);
-                slot.EmptyText.SetActive(false);
+                SetEmptyText(slot);
                 break;
             }
             if(i == ChestSlotService.Instance.ChestSlots.Length - 1)
@@ -53,6 +53,14 @@ public class ChestService : GenericMonoSingleton<ChestService>
                 EventService.Instance.InvokeOnSlotsFull();
             }
         }
+    }
+
+    public void SetEmptyText(ChestSlot slot)
+    {
+        if(slot.SlotType == SlotType.EMPTY)
+            slot.EmptyText.SetActive(true);
+        else
+            slot.EmptyText.SetActive(false);
     }
 
     private void GenerateRandomChest(ChestSlot _slot)
@@ -72,6 +80,8 @@ public class ChestService : GenericMonoSingleton<ChestService>
         view.SetChestController(newChest);
         model.SetChestController(newChest);
 
+        _slot.ChestController = newChest;
+        newChest.SetChestSM(newChest);
         EventService.Instance.InvokeOnChestSpawn(newChest);
     }
     private void OnDisable()

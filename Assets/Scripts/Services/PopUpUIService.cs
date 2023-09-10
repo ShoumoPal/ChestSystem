@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /* Service for our PopUp UI */
 
@@ -24,10 +25,16 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
         _okButton.onClick.AddListener(ClearPopUp);
         _backButton.onClick.AddListener(ClearPopUp);
         _unlockButton.onClick.AddListener(UnlockChest);
+        _startTimerButton.onClick.AddListener(StartUnlockTimer);
 
         EventService.Instance.OnSlotsFull += OnSlotsFull;
         EventService.Instance.OnChestSpawn += ChestSpawned;
         EventService.Instance.OnChestClicked += ChestClicked;
+    }
+
+    private void StartUnlockTimer()
+    {
+        _currentChest.GetChestModel().ChestState = ChestState.UNLOCKING;
     }
 
     public void UnlockChest()
@@ -38,10 +45,39 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
         {
             EventService.Instance.InvokeOnUpdateCurrency(0, gemCount);
             _currentChest.GetChestModel().ChestState = ChestState.UNLOCKED;
+            _currentChest.GetChestSM().ChangeState(ChestState.UNLOCKED);
             _currentChest.StartChestParticle();
 
             ClearPopUp();
         }
+        else
+        {
+            ShowNotEnoughGems();
+        }
+    }
+
+    private void ShowChestRewards(int coins, int gems)
+    {
+        _popUpText.text = "Chest opened!\n\nRewards:\n\nCoins: " + coins + "\nGems: " + gems;
+        _popUp.SetActive(true);
+        DisableAllButtons();
+        _okButton.gameObject.SetActive(true);
+    }
+
+    private void DisableAllButtons()
+    {
+        _okButton.gameObject.SetActive(false);
+        _backButton.gameObject.SetActive(false);
+        _unlockButton.gameObject.SetActive(false);
+        _startTimerButton.gameObject.SetActive(false);
+    }
+    private void ShowNotEnoughGems()
+    {
+        _popUpText.text = "Not enough gem!";
+        _popUp.SetActive(true);
+
+        DisableAllButtons();
+        _okButton.gameObject.SetActive(true);
     }
 
     private void ChestClicked(ChestController chestController)
@@ -66,7 +102,20 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
                 break;
 
             case ChestState.UNLOCKED: //Unlocked State Click
-                Debug.Log("Chest unlocked!");
+                int randomCoins = Random.Range(_currentChest.GetChestModel().COINS_RANGE.x, _currentChest.GetChestModel().COINS_RANGE.y);
+                int randomGems = Random.Range(_currentChest.GetChestModel().GEMS_RANGE.x, _currentChest.GetChestModel().GEMS_RANGE.y);
+                ChestSlot slot = Array.Find(ChestSlotService.Instance.ChestSlots, i => i.ChestController == _currentChest);
+
+                //Destroying chest object
+                Destroy(_currentChest.GetChestView().gameObject);
+
+                slot.SlotType = SlotType.EMPTY;
+                slot.TimerText.text = "";
+                ChestService.Instance.SetEmptyText(slot);
+
+                ShowChestRewards(randomCoins, randomGems);
+                EventService.Instance.InvokeOnUpdateCurrency(-randomCoins, -randomGems);
+
                 break;
         }
     }

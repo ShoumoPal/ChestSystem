@@ -6,6 +6,7 @@ public class ChestController
 {
     private ChestView _chestView;
     private ChestModel _chestModel;
+    private ChestSM chestSM;
 
     public ChestController(ChestView chestView, ChestModel chestModel)
     {
@@ -13,15 +14,14 @@ public class ChestController
         _chestModel = chestModel;
     }
 
-    public void UnlockChest()
+    public void SetChestSM(ChestController _chestController)
     {
-        int gemCount = _chestModel.MAX_GEMS_TO_UNLOCK;
-        if (ChestService.Instance._currentGems >= gemCount)
-        {
-            EventService.Instance.InvokeOnUpdateCurrency(0, gemCount);
-            _chestModel.ChestState = ChestState.UNLOCKED;
-            StartChestParticle();
-        }
+        chestSM = new ChestSM(_chestController);
+    }
+
+    public ChestSM GetChestSM()
+    {
+        return chestSM;
     }
 
     public void StartChestParticle()
