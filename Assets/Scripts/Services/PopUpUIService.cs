@@ -15,6 +15,7 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
     [SerializeField] private Button _backButton;
 
     private TextMeshProUGUI _popUpText;
+    private ChestController _currentChest;
 
     private void Start()
     {
@@ -22,23 +23,52 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
         _okButton = _popUp.GetComponentInChildren<Button>();
         _okButton.onClick.AddListener(ClearPopUp);
         _backButton.onClick.AddListener(ClearPopUp);
+        _unlockButton.onClick.AddListener(UnlockChest);
 
         EventService.Instance.OnSlotsFull += OnSlotsFull;
         EventService.Instance.OnChestSpawn += ChestSpawned;
         EventService.Instance.OnChestClicked += ChestClicked;
     }
 
+    public void UnlockChest()
+    {
+        Debug.Log(ChestService.Instance);
+        int gemCount = _currentChest.GetChestModel().MAX_GEMS_TO_UNLOCK;
+        if (ChestService.Instance._currentGems >= gemCount)
+        {
+            EventService.Instance.InvokeOnUpdateCurrency(0, gemCount);
+            _currentChest.GetChestModel().ChestState = ChestState.UNLOCKED;
+            _currentChest.StartChestParticle();
+
+            ClearPopUp();
+        }
+    }
+
     private void ChestClicked(ChestController chestController)
     {
-        _popUpText.text = "Start timer or unlock with gems?";
-        _unlockButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unlock " + chestController.GetChestModel().MAX_GEMS_TO_UNLOCK + " <sprite name=\"gem\">";
-        _popUp.gameObject.SetActive(true);
+        ChestState state = chestController.GetChestModel().ChestState;
+        _currentChest = chestController;
 
-        // Modifying buttons
-        _okButton.gameObject.SetActive(false);
-        _unlockButton.gameObject.SetActive(true);
-        _startTimerButton.gameObject.SetActive(true);
-        _backButton.gameObject.SetActive(true);
+        switch (state)
+        {
+            case ChestState.LOCKED: //Locked state click
+
+                _popUpText.text = "Start timer or unlock with gems?";
+                _unlockButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unlock " + chestController.GetChestModel().MAX_GEMS_TO_UNLOCK + " <sprite name=\"gem\">";
+                _popUp.gameObject.SetActive(true);
+
+                // Modifying buttons
+                _okButton.gameObject.SetActive(false);
+                _unlockButton.gameObject.SetActive(true);
+                _startTimerButton.gameObject.SetActive(true);
+                _backButton.gameObject.SetActive(true);
+
+                break;
+
+            case ChestState.UNLOCKED: //Unlocked State Click
+                Debug.Log("Chest unlocked!");
+                break;
+        }
     }
 
     private void ChestSpawned(ChestController chestController)

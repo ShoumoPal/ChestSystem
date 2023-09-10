@@ -35,6 +35,7 @@ public class ChestModel
     public int MAX_GEMS_TO_UNLOCK { get; }
     public ChestView ChestView { get; }
     public ChestType ChestType { get; }
+    public ChestState ChestState { get; set; }
 
     // Public contructor
 
@@ -46,6 +47,7 @@ public class ChestModel
         MAX_GEMS_TO_UNLOCK = chestScriptableObject.Max_Gems_To_Unlock;
         ChestType = chestScriptableObject.Chest_Type;
         ChestView = chestScriptableObject.ChestView;
+        ChestState = ChestState.LOCKED;
     }
 
     // Setters and Getters
