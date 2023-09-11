@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Chest queue service for queuing them on unlock request */
+
 public class ChestQueueService : GenericMonoSingleton<ChestQueueService>
 {
     [SerializeField] private int _maxQueueCount;

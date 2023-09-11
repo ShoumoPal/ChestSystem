@@ -1,6 +1,8 @@
 
 using System;
 
+/* Chest Unlocked state */
+
 public class ChestUnlockedState : ChestBaseState
 {
     public ChestUnlockedState(ChestSM chestSM) : base(chestSM) { }

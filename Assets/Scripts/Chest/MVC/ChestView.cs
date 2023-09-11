@@ -26,7 +26,6 @@ public class ChestView : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         SoundService.Instance.PlayClip(SoundType.ButtonClick);
-
         EventService.Instance.InvokeOnChestClicked(_chestController);
     }
 

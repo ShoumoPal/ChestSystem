@@ -1,5 +1,7 @@
 using UnityEngine;
 
+/* Chest State Machine */
+
 public class ChestSM : MonoBehaviour
 {
     private ChestController _chestController;
