@@ -14,6 +14,7 @@ public class ChestUnlockedState : ChestBaseState
     private void SetTimerText()
     {
         ChestController chest = chestSM.GetChestController();
+        chest.StartChestParticle();
         ChestSlot slot = Array.Find(ChestSlotService.Instance.ChestSlots, i => i.ChestController == chest);
         slot.TimerText.text = "Open";
     }

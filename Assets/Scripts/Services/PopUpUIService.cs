@@ -14,6 +14,7 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
     [SerializeField] private Button _unlockButton;
     [SerializeField] private Button _startTimerButton;
     [SerializeField] private Button _backButton;
+    [SerializeField] private Button _unlockWithGemsButton;
 
     private TextMeshProUGUI _popUpText;
     private ChestController _currentChest;
@@ -25,6 +26,7 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
         _okButton.onClick.AddListener(ClearPopUp);
         _backButton.onClick.AddListener(ClearPopUp);
         _unlockButton.onClick.AddListener(UnlockChest);
+        _unlockWithGemsButton.onClick.AddListener(UnlockChest);
         _startTimerButton.onClick.AddListener(StartUnlockTimer);
 
         EventService.Instance.OnSlotsFull += OnSlotsFull;
@@ -34,13 +36,14 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
 
     private void StartUnlockTimer()
     {
-        _currentChest.GetChestModel().ChestState = ChestState.UNLOCKING;
+        SoundService.Instance.PlayClip(SoundType.ButtonClick);
+        _currentChest.GetChestSM().ChangeState(ChestState.UNLOCKING);
+        ClearPopUp();
     }
 
     public void UnlockChest()
     {
-        Debug.Log(ChestService.Instance);
-        int gemCount = _currentChest.GetChestModel().MAX_GEMS_TO_UNLOCK;
+        int gemCount = (int)_currentChest.GetChestModel().GEMS_TO_UNLOCK;
         if (ChestService.Instance._currentGems >= gemCount)
         {
             EventService.Instance.InvokeOnUpdateCurrency(0, gemCount);
@@ -70,6 +73,7 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
         _backButton.gameObject.SetActive(false);
         _unlockButton.gameObject.SetActive(false);
         _startTimerButton.gameObject.SetActive(false);
+        _unlockWithGemsButton.gameObject.SetActive(false);
     }
     private void ShowNotEnoughGems()
     {
@@ -117,9 +121,22 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
                 EventService.Instance.InvokeOnUpdateCurrency(-randomCoins, -randomGems);
 
                 break;
+
+            case ChestState.UNLOCKING:
+                ShowUnlockWithGemsScreen();
+                break;
         }
     }
 
+    private void ShowUnlockWithGemsScreen()
+    {
+        _popUp.SetActive(true);
+        _popUpText.text = "Unlock chest with gems?";
+        DisableAllButtons();
+        _backButton.gameObject.SetActive(true);
+        _unlockWithGemsButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unlock " + _currentChest.GetChestModel().GEMS_TO_UNLOCK.ToString() + " <sprite name=\"gem\">";
+        _unlockWithGemsButton.gameObject.SetActive(true);
+    }
     private void ChestSpawned(ChestController chestController)
     {
         // Setting background to non-interactable
@@ -144,14 +161,12 @@ public class PopUpUIService : GenericMonoSingleton<PopUpUIService>
                 break;
         }
 
-        // Activating pop-up and buttons
+        // Activating pop-up
         _popUp.SetActive(true);
-        _okButton.gameObject.SetActive(true);
 
         // Deactivating unused buttons
-        _unlockButton.gameObject.SetActive(false);
-        _startTimerButton.gameObject.SetActive(false);
-        _backButton.gameObject.SetActive(false);
+        DisableAllButtons();
+        _okButton.gameObject.SetActive(true);
     }
 
     public void OnSlotsFull()

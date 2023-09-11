@@ -24,6 +24,12 @@ public class ChestController
         return chestSM;
     }
 
+    public void ChangeUnlockTimer(float time)
+    {
+        _chestModel.UNLOCK_TIME = Mathf.Max(_chestModel.UNLOCK_TIME - time, 0);
+        _chestModel.GEMS_TO_UNLOCK = Mathf.Ceil((_chestModel.UNLOCK_TIME / _chestModel.MAX_UNLOCK_TIME) * _chestModel.MAX_GEMS_TO_UNLOCK);
+    }
+
     public void StartChestParticle()
     {
         _chestView.StartParticle();
