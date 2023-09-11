@@ -13,8 +13,6 @@ public class ChestView : MonoBehaviour, IPointerClickHandler
         chestParticle = GetComponentInChildren<ParticleSystem>();
     }
 
-
-
     public void StartParticle()
     {
         chestParticle.Play();

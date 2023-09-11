@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Chest_Coins_Range: {x: 1000, y: 1200}
   Chest_Gems_Range: {x: 80, y: 100}
-  Max_Unlock_Time: 0
-  Max_Gems_To_Unlock: 100
+  Unlock_Time: 10800
+  Gems_To_Unlock: 18
+  Max_Unlock_Time: 10800
+  Max_Gems_To_Unlock: 18
   ChestView: {fileID: 1581629000664776725, guid: 5c9eff35691e0014eaf89c3fbfbd5b74, type: 3}
   Chest_Type: 3

@@ -8,12 +8,17 @@ public class ChestSM : MonoBehaviour
 
     private ChestLockedState _chestLockedState;
     private ChestUnlockedState _chestUnlockedState;
+    private ChestUnlockingState _chestUnlockingState;
+    private ChestQueuedState _chestQueuedState;
 
     public ChestSM(ChestController chestController)
     {
         _chestController = chestController;
         _chestLockedState = new ChestLockedState(this);
         _chestUnlockedState = new ChestUnlockedState(this);
+        _chestUnlockingState = new ChestUnlockingState(this);
+        _chestQueuedState = new ChestQueuedState(this);
+
         ChangeState(ChestState.LOCKED);
     }
     private void Update()
@@ -23,14 +28,15 @@ public class ChestSM : MonoBehaviour
     public void ChangeState(ChestState state)
     {
         ChestBaseState newChestState = GetChestStateFromEnum(state);
-        
-        //if (_currentState == newChestState)
-        //{
-        //    return;
-        //}
+
+        if (_currentState == newChestState)
+        {
+            return;
+        }
         _currentState?.OnStateExit();
 
         _currentState = newChestState;
+        _chestController.GetChestModel().ChestState = state;
         _currentState.OnStateEnter();
     }
     public ChestBaseState GetChestStateFromEnum(ChestState state)
@@ -41,6 +47,10 @@ public class ChestSM : MonoBehaviour
                 return _chestLockedState;
             case ChestState.UNLOCKED:
                 return _chestUnlockedState;
+            case ChestState.UNLOCKING:
+                return _chestUnlockingState;
+            case ChestState.QUEUED:
+                return _chestQueuedState;
         }
         return null;
     }
