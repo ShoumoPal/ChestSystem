@@ -17,7 +17,7 @@ public enum ChestState
     LOCKED,
     UNLOCKING,
     UNLOCKED,
-    COLLECTED
+    QUEUED
 }
 
 /* Chest Model for MVC */

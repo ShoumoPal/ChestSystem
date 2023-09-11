@@ -9,6 +9,7 @@ public class ChestSM : MonoBehaviour
     private ChestLockedState _chestLockedState;
     private ChestUnlockedState _chestUnlockedState;
     private ChestUnlockingState _chestUnlockingState;
+    private ChestQueuedState _chestQueuedState;
 
     public ChestSM(ChestController chestController)
     {
@@ -16,6 +17,7 @@ public class ChestSM : MonoBehaviour
         _chestLockedState = new ChestLockedState(this);
         _chestUnlockedState = new ChestUnlockedState(this);
         _chestUnlockingState = new ChestUnlockingState(this);
+        _chestQueuedState = new ChestQueuedState(this);
 
         ChangeState(ChestState.LOCKED);
     }
@@ -47,6 +49,8 @@ public class ChestSM : MonoBehaviour
                 return _chestUnlockedState;
             case ChestState.UNLOCKING:
                 return _chestUnlockingState;
+            case ChestState.QUEUED:
+                return _chestQueuedState;
         }
         return null;
     }

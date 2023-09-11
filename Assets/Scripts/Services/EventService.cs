@@ -8,6 +8,7 @@ public class EventService : GenericMonoSingleton<EventService>
     public event Action<ChestController> OnChestSpawn;
     public event Action<ChestController> OnChestClicked;
     public event Action<int, int> OnUpdateCurrency;
+    public event Action OnQueueFull;
 
     public void InvokeOnSlotsFull()
     {
@@ -24,5 +25,9 @@ public class EventService : GenericMonoSingleton<EventService>
     public void InvokeOnUpdateCurrency(int coins, int gems)
     {
         OnUpdateCurrency?.Invoke(coins, gems);
+    }
+    public void InvokeOnQueueFull()
+    {
+        OnQueueFull?.Invoke();
     }
 }

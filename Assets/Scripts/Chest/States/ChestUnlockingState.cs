@@ -29,7 +29,7 @@ public class ChestUnlockingState : ChestBaseState
             yield return new WaitForEndOfFrame();
         }
         chestSM.ChangeState(ChestState.UNLOCKED);
-        //Dequeue goes here
+        //ChestQueueService.Instance.DeQueueChest();
     }
 
     private string GetTimerText(float UNLOCK_TIME)
