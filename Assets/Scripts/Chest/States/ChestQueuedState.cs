@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+/* Chest queued state */
+
 public class ChestQueuedState : ChestBaseState
 {
     public ChestQueuedState(ChestSM chestSM) : base(chestSM) { }

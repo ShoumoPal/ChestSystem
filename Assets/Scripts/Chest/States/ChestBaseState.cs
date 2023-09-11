@@ -1,5 +1,7 @@
 using UnityEngine;
 
+/* Chest base state */
+
 public class ChestBaseState
 {
     protected ChestSM chestSM;

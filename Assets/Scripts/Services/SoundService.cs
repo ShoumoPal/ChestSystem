@@ -2,10 +2,15 @@ using System;
 using UnityEngine;
 
 
+/* Enum for Sound types */
+
 public enum SoundType
 {
-    ButtonClick
+    ButtonClick,
+    ChestOpen
 }
+
+/* Class for sounds */
 
 [Serializable]
 public class Sounds
@@ -14,6 +19,8 @@ public class Sounds
     public AudioClip Clip;
     [Range(0f, 1f)] public float Volume;
 }
+
+/* Service for sounds in-game */
 public class SoundService : GenericMonoSingleton<SoundService>
 {
     private AudioSource source;

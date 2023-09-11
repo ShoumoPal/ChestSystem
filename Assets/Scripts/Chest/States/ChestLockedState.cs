@@ -2,6 +2,8 @@
 using System;
 using UnityEngine;
 
+/* Chest locked state */
+
 public class ChestLockedState : ChestBaseState
 {
     public ChestLockedState(ChestSM chestSM) : base(chestSM) { }

@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 
+/* Chest Unlocking state */
+
 public class ChestUnlockingState : ChestBaseState
 {
     public ChestUnlockingState(ChestSM chestSM) : base(chestSM) { }
@@ -29,7 +31,7 @@ public class ChestUnlockingState : ChestBaseState
             yield return new WaitForEndOfFrame();
         }
         chestSM.ChangeState(ChestState.UNLOCKED);
-        //ChestQueueService.Instance.DeQueueChest();
+        ChestQueueService.Instance.DeQueueChest();
     }
 
     private string GetTimerText(float UNLOCK_TIME)
